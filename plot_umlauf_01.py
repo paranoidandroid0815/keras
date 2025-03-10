@@ -6,6 +6,11 @@ import re
 #Für Matrizen
 import numpy as np
 
+
+#import tkinter as tk
+#from pandastable import Table
+
+
 # Datei einlesen
 data_file = "/home/amok/Projects/keras/umlaufdatenbereinigt.csv"
 with open(data_file, "r", encoding="ISO-8859-1") as f:
@@ -51,4 +56,27 @@ for line in lines:
 # In DataFrame umwandeln
 df = pd.DataFrame(records)
 
-print(df)
+print(df.iloc[3])
+
+# Zeitreihe plotten
+plt.figure(figsize=(10, 5))
+for _, row in df.iterrows():
+    plt.plot(range(len(row["werte"])), row["werte"], label=f"{row['timestamp']} ({row['richtung']})")
+
+
+plt.show()
+
+
+# Fenster erstellen
+#root = tk.Tk()
+#root.title("DataFrame Viewer")
+
+# Frame für Tabelle
+#frame = tk.Frame(root)
+#frame.pack(fill="both", expand=True)
+
+# Pandastable anzeigen
+#table = Table(frame, dataframe=df, showtoolbar=True, showstatusbar=True)
+#table.show()
+
+# root.mainloop()
