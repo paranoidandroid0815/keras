@@ -56,15 +56,29 @@ for line in lines:
 # In DataFrame umwandeln
 df = pd.DataFrame(records)
 
-print(df.iloc[3])
+## print(df.iloc[3])
 
 # Zeitreihe plotten
 plt.figure(figsize=(10, 5))
 for _, row in df.iterrows():
     plt.plot(range(len(row["werte"])), row["werte"], label=f"{row['timestamp']} ({row['richtung']})")
 
+#Leistung für jeden Umlauf über Zeit
+leistung=[]
+for _, row in df.iterrows():
+    leistungprozeile=np.trapezoid(row["werte"])
+    leistung.append(leistungprozeile)
+
+
+plt.plot(leistung, label="Leistung")
+#position = row["werte"]  # Positionsdaten (z.B. in Metern)
+#work=np.trapezoid(position)
+#Gesamtzeit=len(position)*0.02
+print(f"{leistung} \n")
 
 plt.show()
+
+
 
 
 # Fenster erstellen
