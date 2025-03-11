@@ -56,12 +56,27 @@ for line in lines:
 # In DataFrame umwandeln
 df = pd.DataFrame(records)
 
+# Bedingtes Filtern:
+#
+# df["richtung"] == "links" erzeugt eine boolesche Maske, d. h. eine Serie mit True für Zeilen, in denen der Wert der Spalte "richtung" "links" ist, und False für alle anderen Zeilen.
+# Auswahl der passenden Zeilen:
+
+# df[df["richtung"] == "links"] wendet diese Maske auf df an und gibt nur die Zeilen zurück, bei denen die Bedingung erfüllt ist.
+# Speicherung des gefilterten DataFrames:
+
+# Das Ergebnis wird in df_links gespeichert, sodass dieser neue DataFrame nur noch die Zeilen mit "richtung" == "links" enthält.
+
+
+df_links = df[df["richtung"] == "L"]
+#ich möchte einen Dataframe mit den Rechtsumläufen
+
+#ich möchte einen Dataframe mit den Linksumläufen
+df_rechts= df[df["richtung"] == "R"]
 ## print(df.iloc[3])
 
-# Zeitreihe plotten
-plt.figure(figsize=(10, 5))
-for _, row in df.iterrows():
-    plt.plot(range(len(row["werte"])), row["werte"], label=f"{row['timestamp']} ({row['richtung']})")
+print(f"{df_rechts} \n")
+
+
 
 #Leistung für jeden Umlauf über Zeit
 leistung=[]
@@ -69,12 +84,64 @@ for _, row in df.iterrows():
     leistungprozeile=np.trapezoid(row["werte"])
     leistung.append(leistungprozeile)
 
+#Leistung für jeden Umlauf über Zeit
+leistung_rechts=[]
+for _, row in df_rechts.iterrows():
+    leistungprozeile=np.trapezoid(row["werte"])
+    leistung_rechts.append(leistungprozeile)
 
-plt.plot(leistung, label="Leistung")
-#position = row["werte"]  # Positionsdaten (z.B. in Metern)
+#Leistung für jeden Umlauf über Zeit
+leistung_links=[]
+for _, row in df_links.iterrows():
+    leistungprozeile=np.trapezoid(row["werte"])
+    leistung_links.append(leistungprozeile)
+    
 #work=np.trapezoid(position)
 #Gesamtzeit=len(position)*0.02
-print(f"{leistung} \n")
+#print(f"{leistung} \n")
+
+# Initialise the subplot function using number of rows and columns
+# figure, axis = plt.subplots(4, 4)
+
+
+plt.figure(figsize=(10, 5))
+plt.subplot(3, 2, 1) # (Zeilen, Spalten, Index)
+# Zeitreihe plotten
+for _, row in df.iterrows():
+    plt.plot(range(len(row["werte"])), row["werte"], label=f"{row['timestamp']} ({row['richtung']})")
+plt.title("Alles")
+
+
+plt.subplot(3, 2, 2) # (Zeilen, Spalten, Index)
+plt.plot(leistung, label="Leistung")
+plt.title("Leistung")
+position = row["werte"]  # Positionsdaten (z.B. in Metern)
+
+plt.subplot(3, 2, 3) # (Zeilen, Spalten, Index)
+# Zeitreihe plotten
+for _, row in df_rechts.iterrows():
+    plt.plot(range(len(row["werte"])), row["werte"], label=f"{row['timestamp']} ({row['richtung']})")
+plt.title("Rechts")
+
+plt.subplot(3, 2, 4) # (Zeilen, Spalten, Index)
+# Zeitreihe plotten
+plt.plot(leistung_rechts, label="Leistung")
+plt.title("Leistung Rechts")
+
+
+plt.subplot(3, 2, 5) # (Zeilen, Spalten, Index)
+# Zeitreihe plotten
+for _, row in df_links.iterrows():
+    plt.plot(range(len(row["werte"])), row["werte"], label=f"{row['timestamp']} ({row['richtung']})")
+plt.title("Links")
+
+plt.subplot(3, 2, 6) # (Zeilen, Spalten, Index)
+# Zeitreihe plotten
+plt.plot(leistung_links, label="Leistung")
+plt.title("Leistung Links")
+
+
+
 
 plt.show()
 
