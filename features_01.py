@@ -11,6 +11,9 @@
 # Jerk-Analyse (bewertet Unstetigkeiten) Ruckwerte
 # Temperatur
 # Abweichung mittlere quadratische Abweichung
+# links und rechtsumläufe separat vergleichen
+# Leistungsaufnahme links und rechts vergleichen
+# Möglichkeit alle Umläufe mit Diagnosemeldungen auszugeben
 
 
 #Für Tabellen
@@ -97,6 +100,7 @@ acceleration = np.gradient(velocity, time)
 jerk = np.gradient(acceleration, time)
 
 work=np.trapezoid(position)
+Gesamtzeit=len(position)*0.02
 
 # Visualisiere den Ruck (ruckartige Bewegungen)
 import matplotlib.pyplot as plt
@@ -106,4 +110,5 @@ plt.title('Ruck (Jerk) der Bewegung')
 plt.xlabel('Zeit')
 plt.ylabel('Ruck')
 plt.text(5,0,f"Geleistete Arbeit{work}")
+plt.text(4,1,f"Gesamtzeit{Gesamtzeit}")
 plt.show()
