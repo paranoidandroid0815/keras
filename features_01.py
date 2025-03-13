@@ -14,7 +14,7 @@
 # links und rechtsumläufe separat vergleichen
 # Leistungsaufnahme links und rechts vergleichen
 # Möglichkeit alle Umläufe mit Diagnosemeldungen auszugeben
-
+#
 
 #Für Tabellen
 import pandas as pd
