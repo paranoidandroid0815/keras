@@ -1,7 +1,13 @@
+#ToDo: Linientypen anpassen
+# Farben nach Heatmap
 #Für Tabellen
 import pandas as pd
 #Zum Plotten
 import matplotlib.pyplot as plt
+# Für Farben
+import matplotlib.cm as cm
+import matplotlib.colors as mcolors 
+
 import re
 #Für Matrizen
 import numpy as np
@@ -9,7 +15,6 @@ import numpy as np
 
 #import tkinter as tk
 #from pandastable import Table
-
 
 # Datei einlesen
 data_file = "/home/amok/Projects/keras/umlaufdatenbereinigt.csv"
@@ -104,11 +109,18 @@ for _, row in df_links.iterrows():
 # figure, axis = plt.subplots(4, 4)
 
 
+# cmap = plt.get_cmap("RdYlGn_r")
+
+cmap = plt.get_cmap("viridis")
+
+norm = mcolors.Normalize(vmin=0, vmax=len(df))
 plt.figure(figsize=(10, 5))
 plt.subplot(3, 2, 1) # (Zeilen, Spalten, Index)
 # Zeitreihe plotten
-for _, row in df.iterrows():
-    plt.plot(range(len(row["werte"])), row["werte"], label=f"{row['timestamp']} ({row['richtung']})")
+
+for i, row in df.iterrows():
+    color = cmap(norm(i))
+    plt.plot(range(len(row["werte"])), row["werte"], label=f"{row['timestamp']} ({row['richtung']})", color=color)
 plt.title("Alles")
 
 
@@ -117,22 +129,28 @@ plt.plot(leistung, label="Leistung")
 plt.title("Leistung")
 position = row["werte"]  # Positionsdaten (z.B. in Metern)
 
+norm = mcolors.Normalize(vmin=0, vmax=len(df_rechts))
 plt.subplot(3, 2, 3) # (Zeilen, Spalten, Index)
 # Zeitreihe plotten
-for _, row in df_rechts.iterrows():
-    plt.plot(range(len(row["werte"])), row["werte"], label=f"{row['timestamp']} ({row['richtung']})")
+for i, row in df_rechts.iterrows():
+    color = cmap(norm(i))
+    plt.plot(range(len(row["werte"])), row["werte"], label=f"{row['timestamp']} ({row['richtung']})", color=color)
 plt.title("Rechts")
+
+norm = mcolors.Normalize(vmin=0, vmax=len(df_links))
 
 plt.subplot(3, 2, 4) # (Zeilen, Spalten, Index)
 # Zeitreihe plotten
 plt.plot(leistung_rechts, label="Leistung")
 plt.title("Leistung Rechts")
 
-
+norm = mcolors.Normalize(vmin=0, vmax=len(df_links))
 plt.subplot(3, 2, 5) # (Zeilen, Spalten, Index)
 # Zeitreihe plotten
-for _, row in df_links.iterrows():
-    plt.plot(range(len(row["werte"])), row["werte"], label=f"{row['timestamp']} ({row['richtung']})")
+
+for i, row in df_links.iterrows():
+    color = cmap(norm(i))
+    plt.plot(range(len(row["werte"])), row["werte"], label=f"{row['timestamp']} ({row['richtung']})", color=color)
 plt.title("Links")
 
 plt.subplot(3, 2, 6) # (Zeilen, Spalten, Index)
